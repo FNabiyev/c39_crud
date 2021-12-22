@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'style.css'%}">
+</head>
+<body>
+<center>
+    <a href="/">Home</a>
+    <a href="/kasb/">Kasblar</a>
+    <a href="/hodim/">Hodimlar</a>
+    <h1>Kasb page</h1>
+</center>
+<table>
+  <tr>
+    <th>#</th>
+    <th>Name</th>
+    <th>Edit</th>
+    <th>Delete</th>
+  </tr>
+    {% for k in kasblar %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ k.name }}</td>
+        <td><a href="/edit-kasb/?kasb={{k.id}}">Edit</a></td>
+        <td><a href="/delete-kasb/{{ k.id }}/">Delete</a></td>
+      </tr>
+    {% endfor %}
+    <form {% if kasb %} action="/edit-kasb/" {% else %} action="/add-kasb/" {% endif %} method="post">
+        {% csrf_token %}
+        <tr>
+            <td></td>
+            <td><input type="text" name="kasb" value="{{kasb.name}}"></td>
+            <input type="hidden" name="id" value="{{ kasb.id }}">
+            <td></td>
+            <td><input type="submit" {% if kasb %} value="Taxrirlash" {% else %} value="Qo'shish" {% endif %}></td>
+          </tr>
+    </form>
+</table>
+</body>
+</html>
